@@ -1,0 +1,7 @@
+trl>=0.9
+transformers>=4.40,<5
+datasets>=2.19
+peft>=0.11
+accelerate>=0.33
+torch>=2.3
+wandb>=0.17

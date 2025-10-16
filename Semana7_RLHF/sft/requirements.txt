@@ -1,0 +1,10 @@
+transformers>=4.51.0
+tokenizers>=0.21
+trl==0.9.6
+datasets>=2.19
+accelerate>=0.33
+sentencepiece>=0.1.99
+evaluate>=0.4
+pyyaml>=6.0
+wandb>=0.17
+peft>=0.12.0

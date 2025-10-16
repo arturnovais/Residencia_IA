@@ -1,0 +1,42 @@
+run:
+  output_dir: "out/rm_llm_lora"
+  seed: 42
+  report_to: "wandb"
+  eval_before_train: true      
+  eval_init_subset: 2000
+  wandb:
+    project: "rm-ultrafeedback"
+    run_name: "rm-qwen3-8b-lora"
+
+model:
+  name: "Qwen/Qwen3-8B" 
+  bf16: true
+  max_length: 4096
+
+peft:
+  use_lora: true
+  r: 128
+  lora_alpha: 128
+  lora_dropout: 0.1
+  target_modules: ["q_proj","k_proj","v_proj","o_proj","gate_proj","up_proj","down_proj"]
+
+data:
+  dataset_name: "HuggingFaceH4/ultrafeedback_binarized"
+  train_split: "train_prefs"
+  eval_split: "test_prefs"
+
+train:
+  num_train_epochs: 2
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 8
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.03
+  logging_steps: 5
+  eval_steps: 200
+  save_strategy: "steps"
+  save_steps: 200
+  save_total_limit: 20
+
+reward:
+  length_penalty_beta: 0.001 

@@ -1,0 +1,36 @@
+run:
+  seed: 42
+  output_dir: out/checkpoints
+  report_to: "wandb"
+  wandb:
+    project: "sft-residencia"
+    run_name: "gemma3-1b_sft_trl"
+    tags: ["gemma3-1b", "no_robots", "sft", "cosine", "16ep"]
+   
+
+model:
+  name: "google/gemma-3-1b-pt"
+  tokenizer_name: "google/gemma-3-1b-it"
+  bf16: true
+  gradient_checkpointing: true
+  residual_dropout: 0.2
+
+data:
+  dataset_name: "HuggingFaceH4/no_robots"
+  train_split: "train"
+  eval_split: "test"
+  max_seq_length: 1536
+  packing: false
+
+train:
+  num_workers: 4
+  num_train_epochs: 16
+  learning_rate: 1e-5
+  warmup_ratio: 0.1
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 4
+  logging_steps: 2
+  eval_steps: 40
+  save_total_limit: 16
+  save_strategy: "epoch"
