@@ -1,0 +1,57 @@
+# =========================
+# Dados
+# =========================
+dataset:
+  name: HuggingFaceH4/ultrafeedback_binarized
+  split: train_prefs
+
+# =========================
+# Política (SFT de partida)
+# =========================
+policy:
+  model_path: models/sft/checkpoint-594
+  dtype: auto        
+
+# =========================
+# Reward Model (RM + LoRA)
+# =========================
+rm:
+  base: meta-llama/Llama-3.1-8B
+  adapter: models/rm/checkpoint-956
+  max_length: 2048
+
+# =========================
+# Geração do teste 
+# =========================
+gen:
+  max_new_tokens: 512
+  do_sample: true
+  temperature: 0.7
+  top_p: 0.9
+  repetition_penalty: 1.05
+  add_eot_token: "<end_of_turn>"
+
+# =========================
+# GRPO
+# =========================
+grpo:
+  output_dir: out/grpo_policy
+  per_device_train_batch_size: 8
+  gradient_accumulation_steps: 8
+  learning_rate: 1.0e-5
+  weight_decay: 0.0
+  num_generations: 8
+
+  logging_steps: 5
+  save_steps: 100
+  save_total_limit: 50
+
+  seed: 42
+  report_to: wandb
+
+
+eval:
+  every_steps: 10
+  n_samples: 64
+  batch_size: 8
+
